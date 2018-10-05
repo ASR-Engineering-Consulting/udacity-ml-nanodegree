@@ -1,2 +1,2 @@
 # udacity-ml-nanodegree
-This repo contains all information regarding the Udacity's machine learning nanodegree
+This repo contains all information regarding Udacity's machine learning nanodegree
