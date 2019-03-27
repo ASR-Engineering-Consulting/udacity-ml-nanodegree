@@ -71,8 +71,10 @@ variable), normalizing/scaling skewed data, etc.
 via [feature tools](https://www.featuretools.com/)
 6. Apply machine learning techniques to build a model, specifically supervised approaches like 
 [Extreme Gradient Boosting](https://xgboost.readthedocs.io/en/latest/tutorials/model.html) available via 
-[XGBoost](https://github.com/dmlc/xgboost) and [lightGBM](https://github.com/Microsoft/LightGBM), as well as 
+[XGBoost](https://github.com/dmlc/xgboost), [lightGBM](https://github.com/Microsoft/LightGBM) and 
+[h2o](https://www.h2o.ai/products/h2o/#features), as well as 
 [deep learning implementations](https://www.fast.ai/2018/04/29/categorical-embeddings/) found in 
 [fastai's](https://docs.fast.ai/) Python library.
-7. Evaluate model performance by submitting model predictions to Kaggle and comparing them with the leaderboard
+7. [Track](https://mlflow.org/docs/latest/tracking.html) and evaluate model performance using the validation set and by
+ submitting model predictions to Kaggle and comparing them with the leaderboard
 8. Write a report summarizing the project
