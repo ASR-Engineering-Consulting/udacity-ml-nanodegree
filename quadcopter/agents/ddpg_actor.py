@@ -1,5 +1,6 @@
 from keras import layers, models, optimizers, regularizers
 from keras import backend as K
+from keras.utils.vis_utils import plot_model
 
 
 class Actor:
@@ -22,7 +23,12 @@ class Actor:
         self.action_range = self.action_high - self.action_low
 
         # Initialize any other variables here
-
+        self.lr = 0.0001
+        self.l2 = 1e-6
+        self.units_block_1 = 400
+        self.units_block_2 = 300
+        self.units_block_3 = 200
+    
         self.build_model()
 
     def build_model(self):
@@ -31,25 +37,22 @@ class Actor:
         states = layers.Input(shape=(self.state_size,), name='states')
 
         # Add hidden layers
-        #net = layers.Dense(units=32, activation='relu')(states)
-        #net = layers.Dense(units=64, activation='relu')(net)
-        #net = layers.Dense(units=32, activation='relu')(net)
         
         # first block
-        # increase units and regularizers according to paper
-        net = layers.Dense(units=400, kernel_regularizer=regularizers.l2(1e-6))(states)
+        # increase units and regularizers according to research paper
+        net = layers.Dense(units=self.units_block_1, kernel_regularizer=regularizers.l2(self.l2))(states)
         # add batchnorm with default parameters
         net = layers.BatchNormalization()(net)
         # add relu activation
         net = layers.Activation('relu')(net)
                            
         # second block
-        net = layers.Dense(units=300, kernel_regularizer=regularizers.l2(1e-6))(net)
+        net = layers.Dense(units=self.units_block_2, kernel_regularizer=regularizers.l2(self.l2))(net)
         net = layers.BatchNormalization()(net)
         net = layers.Activation('relu')(net)
         
         # third block
-        net = layers.Dense(units=200, kernel_regularizer=regularizers.l2(1e-6))(net)
+        net = layers.Dense(units=self.units_block_3, kernel_regularizer=regularizers.l2(self.l2))(net)
         net = layers.BatchNormalization()(net)
         net = layers.Activation('relu')(net)
 
@@ -71,7 +74,8 @@ class Actor:
         # Incorporate any additional losses here (e.g. from regularizers)
 
         # Define optimizer and training function
-        optimizer = optimizers.Adam()
+        # set learning rate to 10**-4 (0.0001) as recommend by research paper
+        optimizer = optimizers.Adam(lr=self.lr)
         updates_op = optimizer.get_updates(params=self.model.trainable_weights, loss=loss)
         self.train_fn = K.function(
             inputs=[self.model.input, action_gradients, K.learning_phase()],

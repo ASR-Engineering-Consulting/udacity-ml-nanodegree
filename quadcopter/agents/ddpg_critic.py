@@ -17,6 +17,11 @@ class Critic:
         self.action_size = action_size
 
         # Initialize any other variables here
+        self.lr = 0.001
+        self.l2 = 1e-6
+        self.units_block_1 = 400
+        self.units_block_2 = 300
+        self.units_block_3 = 200
 
         self.build_model()
 
@@ -27,31 +32,27 @@ class Critic:
         actions = layers.Input(shape=(self.action_size,), name='actions')
 
         # Add hidden layer(s) for state pathway
-        #net_states = layers.Dense(units=32, activation='relu')(states)
-        #net_states = layers.Dense(units=64, activation='relu')(net_states)
-        
         # apply pattern from ddpg_actor
+        
         # first block
-        net_states = layers.Dense(units=400, kernel_regularizer=regularizers.l2(1e-6))(states)
+        net_states = layers.Dense(units=self.units_block_1, kernel_regularizer=regularizers.l2(self.l2))(states)
         net_states = layers.BatchNormalization()(net_states)
         net_states = layers.Activation('relu')(net_states)
         
         # second block
-        net_states = layers.Dense(units=300, kernel_regularizer=regularizers.l2(1e-6))(net_states)
+        net_states = layers.Dense(units=self.units_block_2, kernel_regularizer=regularizers.l2(self.l2))(net_states)
         net_states = layers.BatchNormalization()(net_states)
         net_states = layers.Activation('relu')(net_states)
 
         # Add hidden layer(s) for action pathway
-        #net_actions = layers.Dense(units=32, activation='relu')(actions)
-        #net_actions = layers.Dense(units=64, activation='relu')(net_actions)
 
         # first block
-        net_actions = layers.Dense(units=400, kernel_regularizer=regularizers.l2(1e-6))(actions)
+        net_actions = layers.Dense(units=self.units_block_1, kernel_regularizer=regularizers.l2(self.l2))(actions)
         net_actions= layers.BatchNormalization()(net_actions)
         net_actions = layers.Activation('relu')(net_actions)
         
         # second block
-        net_actions = layers.Dense(units=300, kernel_regularizer=regularizers.l2(1e-6))(actions)
+        net_actions = layers.Dense(units=self.units_block_2, kernel_regularizer=regularizers.l2(self.l2))(actions)
         net_actions = layers.BatchNormalization()(net_actions)
         net_actions = layers.Activation('relu')(net_actions)
 
@@ -60,7 +61,7 @@ class Critic:
         net = layers.Activation('relu')(net)
 
         # Add more layers to the combined network if needed
-        net = layers.Dense(units=200)(net)
+        net = layers.Dense(units=self.units_block_3)(net)
         net = layers.BatchNormalization()(net)
         net = layers.Activation('relu')(net)
 
@@ -71,7 +72,8 @@ class Critic:
         self.model = models.Model(inputs=[states, actions], outputs=Q_values)
 
         # Define optimizer and compile model for training with built-in loss function
-        optimizer = optimizers.Adam()
+        # set learning rate to 10**-3 (0.001) as recommend by research paper
+        optimizer = optimizers.Adam(lr=self.lr)  
         self.model.compile(optimizer=optimizer, loss='mse')
 
         # Compute action gradients (derivative of Q values w.r.t. to actions)

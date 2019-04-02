@@ -41,6 +41,18 @@ class DDPG():
         self.gamma = 0.99  # discount factor
         # update tau value according to paper
         self.tau = 0.001  # for soft update of target parameters
+        
+    def __str__(self):
+        params = {
+            "mu": self.exploration_mu,
+            "theta": self.exploration_theta,
+            "sigma": self.exploration_sigma,
+            "gamma": self.gamma,
+            "tau": self.tau,
+            "lr_actor": 0.0001,
+            "lr_critic": 0.001}
+            
+        return f"DDPG agent with params: {[f'{k}: {v}' for k,v in params.items()]}"
 
     def reset_episode(self):
         self.noise.reset()
