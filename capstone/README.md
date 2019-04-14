@@ -3,7 +3,7 @@
 ## About
 Capstone project for Udacity's machine-learning engineer nanodegree.
 A thorough description of the project is available through the 
-[capstone report](https://github.com/slangenbach/udacity-ml-nanodegree/blob/master/capstone/capstone_proposal.pdf).
+[capstone report](https://github.com/slangenbach/udacity-ml-nanodegree/blob/master/capstone/capstone_report.pdf).
 All code necessary to reproduce the results is available trough 
 [Jupyter Notebooks](https://github.com/slangenbach/udacity-ml-nanodegree/blob/master/capstone/capstone.ipynb).
 
