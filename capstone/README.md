@@ -47,3 +47,7 @@ Run Jupyter Lab (or Notebook) to reproduce results
 cd ..
 jupyter lab
 ```
+Optionally edit report markdown files and convert ot PDF
+```
+pandoc capstone_report.md -o capstone_report.pdf -V colorlinks=true -V urlcolor=blue
+```
