@@ -42,7 +42,7 @@ by splitting the provided training set into training and validation sets - again
 It is noteworthy that the data does **not** contain any missing values. Further, all dependent variables are of type
 float and do not need to be converted for further analysis.
 
-A sample of the data is provided below:
+A sample of the data is provided below:  
 ![data_sample](image/data_sample.png)
 
 ### Exploratory Visualization
@@ -52,31 +52,31 @@ etc., the following visualizations where created.
 Although the problem of class imbalance related to the target variable has been discussed above, the plot below 
 emphasizes the issues visually. Only a very small fraction of samples in the training data belong to class 1, i.e.
 customers that made a specific transaction in the past.
-![count_plot](image/count_plot.png)
+![count_plot_target](image/count_plot.png)
 
 The next plot is concerned with the distribution of means across all features, i.e. all dependent variables except 
 `ID_code`. Although there are some slight differences between train- and test set, data is roughly normally distributed.
-![dist_mean](image/dist_mean_plot.png)
+![distribution_means](image/dist_mean_plot.png)
 
 A logical follow up to the investigation of the distribution of means is the investigation of standard distributions. In 
 contrast to the distribution of means, there do not seem to be differences between train- and test set, however it is 
 noteworthy that the distribution of standard deviations has a tail to its right side (positive skew), meaning that some 
 features have particularly large standard deviations. 
-![dist_std](image/dist_sd_plot.png)
+![distribution_standard_deviations](image/dist_sd_plot.png)
 
 Following up on the slight positive skew of the distribution of standard deviations, we investigate the skew of all 
 features. As is evident from the plot, most features are **not** severely skewed but follow a normal or half-normal 
 distribution
-![dist_skew](image/dist_skew_plot.png)
+![distribution_skew](image/dist_skew_plot.png)
 
 The same is true regarding the kurtosis (a measure of tailedness of a distribution) of all features. 
 Most features' kurtosis value represents that of a standard normal distribution (the equivalent kurtosis value is 3)
-![dist_kurt](image/dist_kurt_plot.png)
+![distribution_kurtosis](image/dist_kurt_plot.png)
 
 Finally, we checked if any features exhibited a strong negative/positive correlation among each other. As can be seen
 from the heatmaps below, this was not the case, neither for the training, nor for the testing set
-![corr_train](image/heatmap_corr_train.png)
-![corr_test](image/heatmap_corr_test.png)
+![correlation_train_dataset](image/heatmap_corr_train.png)
+![correlation_test_dataset](image/heatmap_corr_test.png)
 
 Apart from the class imbalance in the target variable, the exploratory analysis of the dataset did not find any 
 abnormal characteristics.
@@ -124,6 +124,7 @@ After training and validating the baseline model we proceeded to more advanced s
 
 ### Refinement
 In order to improve upon the results of the baseline model, the following strategies were employed:
+
 * Tune specific hyper parameters of baseline model
 * Train baseline model on engineered features
 * Train baseline model with learning rate decay (diminishing learning rates over training iterations)
@@ -131,6 +132,7 @@ In order to improve upon the results of the baseline model, the following strate
 * Train XGBoost model with engineered features
 
 When tuning hyper parameters, the following parameters were evaluated:
+
 * learning rate: Discount factor used for optimization
 * feature_fraction: Percentage of features used for each iteration
 * bagging_fraction: Percentage of samples used in each iteration
@@ -142,13 +144,14 @@ When tuning hyper parameters, the following parameters were evaluated:
 After following through with several refinement strategies, it became evident that the best result was obtained from a
 slight variation of the baseline model trained on the original features. By using the following parameters, we reached
 a **validation score** of **0.893** and a test score of **0.890**:
+
 * learning_rate: 0.05
 * feature_fraction: 0.9
 * bagging_fraction: 0.8
 * bagging_freq: 5
 * is_unbalance: True
 
-![lgb_metric](image/lgb_metric.png)
+![lightGBM_metrics](image/lgb_metric.png)
 
 The only strategies that came reasonably close to the solution above were LightGBM with learning rate decay, and the 
 XGBoost model trained on original features with identical parameters. Their final validation scores (0.873 LightGBM 
@@ -161,7 +164,7 @@ The benchmark for this project was to create a model that performs better than r
 the benchmark has been reached. We were however not placed in the top 50% of the leaderboard, despite the final test 
 score of our best submission was 0.890.
 
-![kaggle](image/kaggle_leaderboard.png)
+![Kaggle_Leaderboard](image/kaggle_leaderboard.png)
 
 ## V. Conclusion
 
@@ -174,7 +177,7 @@ and learned that these did not improve our models at all. On the contrary, the p
 features was significantly worse than those using the original features. The plot below shows the importance of the 10 
 most important features of our best model. Apparently, no single (manually) created feature had a significant impact.
 
-![lgb_feature_importance](image/lgb_feature_importance.png)
+![lightGBM_feature_importances](image/lgb_feature_importance.png)
 
 ### Reflection
 The goal of this project was to find a solution for a binary classification problem in the financial services industry, 
@@ -189,6 +192,7 @@ implementation and usage) often outperformed particularly complex ones.
 
 ### Improvement
 Despite the satisfactory performance of our solution, several strategies can be followed to improve it:
+
 * Further investigate feature engineering by creating (potentially deep) variants of the top performing features
 * Augment the original data using oversampling
 * Expand hyper parameter tuning by either selecting more parameters to tune and/or greater ranges of parameter values
