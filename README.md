@@ -1,5 +1,5 @@
-# Machine Learning Nanodegree
-This repo contains all information regarding Udacity's machine learning nanodegree.  
+# Machine Learning Engineer Nanodegree
+This repo contains all information regarding Udacity's [machine learning engineer nanodegree](https://eu.udacity.com/course/machine-learning-engineer-nanodegree--nd009).  
 It is structured around the following projects:
 
 1. Predicting Boston housing prices using scikit-learn
